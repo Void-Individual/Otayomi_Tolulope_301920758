@@ -1,0 +1,104 @@
+PALM COURT GUESTHOUSE — PORTFOLIO 1 CONSTRAINT EVIDENCE
+Student: Tolulope Otayomi | 301920758
+Executed by: OpenAI Codex agent
+Captured UTC: 2026-11-15T14:37:51.949415+00:00
+Database: tolu_guesthouse_301920758
+Server: PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+Command: docker exec -i tolu-mit8103-postgres psql -X -U tolu_admin -d tolu_guesthouse_301920758 < P1_ConstraintTests.sql (full prefixed filename)
+Scenario business date: 2026-12-01; actual timestamps are not scenario dates.
+
+Pager usage is off.
+Null display is "(null)".
+BEGIN
+                        label                         |                        outcome                         
+------------------------------------------------------+--------------------------------------------------------
+ 01 seed counts                                       | PASS
+ 02 seeded state distribution                         | PASS
+ 03 exclusive departure and preserved quote           | PASS
+ 04 duplicate guest                                   | PASS: rejected 23505 / guest_pkey
+ 05 required guest name                               | PASS: rejected 23502
+ 06 blank guest name                                  | PASS: rejected 23514 / guest_name_present
+ 07 duplicate category name                           | PASS: rejected 23505 / room_category_category_name_key
+ 08 negative rate                                     | PASS: rejected 23514 / ngn_amount_valid
+ 09 excessive price precision                         | PASS: rejected 23514 / ngn_amount_valid
+ 10 NaN price                                         | PASS: rejected 23514 / ngn_amount_valid
+ 11 infinite price                                    | PASS: rejected 23514 / ngn_amount_valid
+ 12 unknown room category                             | PASS: rejected 23503 / room_category_code_fkey
+ 13 zero capacity                                     | PASS: rejected 23514 / room_capacity_positive
+ 14 fixed capacity                                    | PASS: rejected 23514 / room_fixed_inventory
+ 15 unknown guest                                     | PASS: rejected 23503 / reservation_guest_code_fkey
+ 16 unknown room                                      | PASS: rejected 23503 / reservation_room_number_fkey
+ 17 required party size                               | PASS: rejected 23502
+ 18 zero party size                                   | PASS: rejected 23514 / reservation_party_positive
+ 19 over capacity                                     | PASS: rejected 23514 / reservation_capacity
+ 20 zero length stay                                  | PASS: rejected 23514 / reservation_dates_valid
+ 21 reversed stay                                     | PASS: rejected 23514 / reservation_dates_valid
+ 22 infinite departure                                | PASS: rejected 23514 / reservation_dates_valid
+ 23 past arrival                                      | PASS: rejected 23514 / reservation_not_in_past
+ 24 duplicate reference                               | PASS: rejected 23505 / reservation_pkey
+ 25 identical overlap                                 | PASS: rejected 23P01 / reservation_no_overlap
+ 26 contained overlap                                 | PASS: rejected 23P01 / reservation_no_overlap
+ 27 partial overlap                                   | PASS: rejected 23P01 / reservation_no_overlap
+ 28 adjacent stay accepted                            | PASS
+ 29 other room and exact capacity accepted            | PASS
+ 30 immutable booking terms                           | PASS: rejected 23514 / reservation_terms_immutable
+ 31 retained booking history                          | PASS: rejected 23514 / reservation_history_retained
+ 32 premature completion                              | PASS: rejected 23514 / reservation_transition_date
+ 33 terminal cancellation                             | PASS: rejected 23514 / reservation_status_transition
+ 34 unknown status                                    | PASS: rejected 23514 / reservation_status_transition
+ 35 cancellation releases nights and preserves prices | PASS
+ 36 new rate does not reprice older bookings          | PASS
+ 37 cancellation on arrival rejected                  | PASS: rejected 23514 / reservation_transition_date
+ 38 completion on departure accepted                  | PASS
+ 39 completion is terminal                            | PASS: rejected 23514 / reservation_status_transition
+ 40 completed history still excludes overlaps         | PASS: rejected 23P01 / reservation_no_overlap
+ 41 atomic failed multi-step operation                | PASS: rejected 23P01 / reservation_no_overlap
+ 42 failed operation leaves no partial records        | PASS
+ 43 operator cannot change fixture clock              | PASS: rejected 42501
+ 44 operator cannot bypass booking API                | PASS: rejected 42501
+ 45 operator cannot truncate history                  | PASS: rejected 42501
+ 46 operator can book on business date at capacity    | PASS
+ 47 all expected cases ran                            | PASS
+(47 rows)
+
+ passed_checks 
+---------------
+            47
+(1 row)
+
+ROLLBACK
+All 47 checks passed; test changes rolled back.
+    entity     | rows 
+---------------+------
+ guest         |    8
+ reservation   |   10
+ room          |   12
+ room_category |    3
+(4 rows)
+
+  status   | reservations 
+-----------+--------------
+ CANCELLED |            1
+ COMPLETED |            2
+ CONFIRMED |            7
+(3 rows)
+
+ scenario_business_date 
+------------------------
+ 2026-12-01
+(1 row)
+
+ reservation_ref | room_number |  arrival   | departure  |  status   | agreed_nightly_rate | nights | original_booking_value_ngn 
+-----------------+-------------+------------+------------+-----------+---------------------+--------+----------------------------
+ PCG-C001        | 302         | 2026-12-20 | 2026-12-22 | CANCELLED |            60000.00 |      2 |                  120000.00
+ PCG-F001        | 101         | 2026-12-10 | 2026-12-12 | CONFIRMED |            25000.00 |      2 |                   50000.00
+ PCG-F002        | 101         | 2026-12-12 | 2026-12-15 | CONFIRMED |            25000.00 |      3 |                   75000.00
+ PCG-F003        | 102         | 2026-12-10 | 2026-12-13 | CONFIRMED |            25000.00 |      3 |                   75000.00
+ PCG-F004        | 201         | 2026-12-11 | 2026-12-14 | CONFIRMED |            40000.00 |      3 |                  120000.00
+ PCG-F005        | 301         | 2026-12-20 | 2026-12-23 | CONFIRMED |            60000.00 |      3 |                  180000.00
+ PCG-F006        | 202         | 2026-12-31 | 2027-01-03 | CONFIRMED |            40000.00 |      3 |                  120000.00
+ PCG-F007        | 302         | 2026-12-20 | 2026-12-22 | CONFIRMED |            60000.00 |      2 |                  120000.00
+ PCG-H001        | 101         | 2026-11-05 | 2026-11-07 | COMPLETED |            25000.00 |      2 |                   50000.00
+ PCG-H002        | 201         | 2026-11-06 | 2026-11-09 | COMPLETED |            40000.00 |      3 |                  120000.00
+(10 rows)
+

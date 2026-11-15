@@ -1,0 +1,29 @@
+PALM COURT GUESTHOUSE — ENVIRONMENT EVIDENCE
+Student: Tolulope Otayomi | 301920758
+Captured UTC: 2026-11-15T14:37:51.949415+00:00
+Executed by: OpenAI Codex agent
+
+PostgreSQL: PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+Container: tolu-mit8103-postgres
+Network: none; published ports: none
+Image: sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b
+Project mounts (secret contents not displayed):
+/run/secrets/postgres_password <- temp/runtime/secrets/postgres_password
+/var/lib/postgresql/data <- temp/runtime/postgres
+
+Docker engine: 29.8.2
+
+MongoDB connection check:
+{
+  database: 'tolu_guesthouse_301920758',
+  ping: 1,
+  version: '7.0.43',
+  collections: []
+}
+
+mongosh: 2.12.0
+
+Main/replay databases: independent databases in the dedicated Tolu container.
+Unrelated container mit8103-postgres was not modified.
+MongoDB is loopback-only at 127.0.0.1:27058, with project-specific data and logs.
+No P4 collections exist yet; no cloud deployment was performed.

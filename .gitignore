@@ -1,0 +1,34 @@
+# Local planning, attached references, tools, and authentication state.
+/temp/
+/AGENTS.md
+/.agents/
+/.codex/
+/README.md
+
+# Credentials and private local configuration.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.ssh/
+.aws/
+.gh/
+
+# Installed dependencies, database runtime state, and editor/OS noise.
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+.cache/
+/tmp/
+/pgdata/
+/mongo-data/
+
+# Do not blanket-ignore evidence formats such as SQL, JSON, PNG, PDF, or logs.

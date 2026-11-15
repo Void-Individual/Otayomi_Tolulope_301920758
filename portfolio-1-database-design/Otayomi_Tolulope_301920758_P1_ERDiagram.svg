@@ -1,0 +1,209 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1900"
+  height="1160"
+  viewBox="0 0 1900 1160"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Palm Court Guesthouse relational ER diagram</title>
+  <desc id="desc">
+    Four business tables: guest, room category, room and reservation. Category
+    to room, room to reservation and guest to reservation are one to
+    zero-or-many. All child foreign keys are required. A separate singleton
+    demonstration clock has no business relationships.
+  </desc>
+  <rect width="1900" height="1160" fill="#f3f6fa" />
+  <style>
+    text {
+      font-family: Arial, Helvetica, sans-serif;
+      fill: #172b4d;
+    }
+    .title {
+      font-size: 38px;
+      font-weight: 700;
+    }
+    .sub {
+      font-size: 22px;
+      fill: #536580;
+    }
+    .heading {
+      font-size: 26px;
+      fill: white;
+      font-weight: 700;
+    }
+    .row {
+      font-size: 22px;
+    }
+    .note {
+      font-size: 21px;
+      fill: #536580;
+    }
+    .label {
+      font-size: 22px;
+      font-weight: 700;
+      fill: #176b70;
+    }
+  </style>
+  <text x="60" y="64" class="title">Palm Court Guesthouse</text>
+  <text x="60" y="104" class="sub">
+    Relational ER diagram · Tolulope Otayomi · 301920758
+  </text>
+  <text x="60" y="139" class="note">
+    PK primary key | FK foreign key | UK alternate unique key | Every listed
+    attribute is NOT NULL
+  </text>
+  <rect
+    x="60"
+    y="195"
+    width="420"
+    height="160"
+    rx="12"
+    fill="white"
+    stroke="#c6d1e0"
+    stroke-width="2"
+  />
+  <path
+    d="M72,195 H468 Q480,195 480,207 V253 H60 V207 Q60,195 72,195"
+    fill="#173452"
+  />
+  <text x="82" y="234" class="heading">guest</text>
+  <text x="82" y="285" class="row">PK guest_code : text</text>
+  <text x="82" y="321" class="row">display_name : text</text>
+  <rect
+    x="60"
+    y="500"
+    width="420"
+    height="196"
+    rx="12"
+    fill="white"
+    stroke="#c6d1e0"
+    stroke-width="2"
+  />
+  <path
+    d="M72,500 H468 Q480,500 480,512 V558 H60 V512 Q60,500 72,500"
+    fill="#173452"
+  />
+  <text x="82" y="539" class="heading">room_category</text>
+  <text x="82" y="590" class="row">PK category_code : text</text>
+  <text x="82" y="626" class="row">UK category_name : text</text>
+  <text x="82" y="662" class="row">current_nightly_rate : ngn_amount</text>
+  <rect
+    x="650"
+    y="500"
+    width="400"
+    height="196"
+    rx="12"
+    fill="white"
+    stroke="#c6d1e0"
+    stroke-width="2"
+  />
+  <path
+    d="M662,500 H1038 Q1050,500 1050,512 V558 H650 V512 Q650,500 662,500"
+    fill="#173452"
+  />
+  <text x="672" y="539" class="heading">room</text>
+  <text x="672" y="590" class="row">PK room_number : text</text>
+  <text x="672" y="626" class="row">FK category_code : text</text>
+  <text x="672" y="662" class="row">capacity : integer</text>
+  <rect
+    x="1220"
+    y="195"
+    width="620"
+    height="580"
+    rx="12"
+    fill="white"
+    stroke="#c6d1e0"
+    stroke-width="2"
+  />
+  <path
+    d="M1232,195 H1828 Q1840,195 1840,207 V253 H1220 V207 Q1220,195 1232,195"
+    fill="#176b70"
+  />
+  <text x="1242" y="234" class="heading">reservation</text>
+  <text x="1242" y="285" class="row">PK reservation_ref : text</text>
+  <text x="1242" y="321" class="row">FK guest_code : text</text>
+  <text x="1242" y="357" class="row">FK room_number : text</text>
+  <text x="1242" y="393" class="row">arrival : date</text>
+  <text x="1242" y="429" class="row">departure : date</text>
+  <text x="1242" y="465" class="row">party_size : integer</text>
+  <text x="1242" y="501" class="row">status : text</text>
+  <text x="1242" y="537" class="row">agreed_nightly_rate : ngn_amount</text>
+  <text x="1242" y="573" class="row">booked_on : date</text>
+  <text x="1242" y="609" class="row">status_changed_on : date</text>
+  <text x="1242" y="645" class="row">created_at : timestamptz</text>
+  <text x="1242" y="681" class="row">status_changed_at : timestamptz</text>
+  <text x="1242" y="717" class="note">
+    EXCLUDE: same room + overlapping [arrival, departure)
+  </text>
+  <text x="1242" y="747" class="note">
+    Applies when status &lt;&gt; &#x27;CANCELLED&#x27;
+  </text>
+  <path d="M480,285 H1220" fill="none" stroke="#176b70" stroke-width="3" />
+  <path
+    d="M495,273 V297 M1198,285 L1220,273 M1198,285 L1220,297"
+    stroke="#176b70"
+    stroke-width="3"
+    fill="none"
+  />
+  <text x="502" y="265" class="label">1</text>
+  <text x="1155" y="265" class="label">0..*</text>
+  <text x="655" y="260" class="note">one lead guest per reservation</text>
+  <path d="M480,590 H650" fill="none" stroke="#176b70" stroke-width="3" />
+  <path
+    d="M495,578 V602 M628,590 L650,578 M628,590 L650,602"
+    stroke="#176b70"
+    stroke-width="3"
+    fill="none"
+  />
+  <text x="502" y="570" class="label">1</text>
+  <text x="585" y="570" class="label">0..*</text>
+  <path d="M1050,590 H1220" fill="none" stroke="#176b70" stroke-width="3" />
+  <path
+    d="M1065,578 V602 M1198,590 L1220,578 M1198,590 L1220,602"
+    stroke="#176b70"
+    stroke-width="3"
+    fill="none"
+  />
+  <text x="1072" y="570" class="label">1</text>
+  <text x="1155" y="570" class="label">0..*</text>
+  <text x="60" y="785" class="note">
+    A category may have no rooms; a room may have no reservations.
+  </text>
+  <text x="60" y="819" class="note">
+    Each room requires one category; each reservation requires one room and
+    guest.
+  </text>
+  <rect
+    x="60"
+    y="885"
+    width="420"
+    height="160"
+    rx="12"
+    fill="white"
+    stroke="#c6d1e0"
+    stroke-width="2"
+  />
+  <path
+    d="M72,885 H468 Q480,885 480,897 V943 H60 V897 Q60,885 72,885"
+    fill="#52617c"
+  />
+  <text x="82" y="924" class="heading">demo_clock (technical)</text>
+  <text x="82" y="975" class="row">PK singleton : boolean (true)</text>
+  <text x="82" y="1011" class="row">as_of_date : date</text>
+  <text x="560" y="931" class="row">
+    Independent fixture control; no FK to the business model.
+  </text>
+  <text x="560" y="971" class="note">
+    Only the administrator changes the scenario date. Actual audit timestamps
+    stay real.
+  </text>
+  <text x="560" y="1011" class="note">
+    Derived, not stored: night count, room-night expansion and total booking
+    value.
+  </text>
+  <text x="60" y="1113" class="note">
+    All prices are NGN. A booking keeps one agreed nightly rate for its entire
+    stay. Diagram matches P1_Schema.sql.
+  </text>
+</svg>
