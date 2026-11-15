@@ -1,0 +1,17 @@
+Captured UTC: 2026-11-15T15:27:29.580013+00:00
+Database: tolu_guesthouse_301920758_replay
+Source: Otayomi_Tolulope_301920758_P2_BenchmarkSetup.sql
+
+BEGIN
+CREATE SCHEMA
+CREATE TABLE
+INSERT 0 5000
+CREATE TABLE
+INSERT 0 200000
+COMMIT
+ANALYZE
+ synthetic_rows | confirmed_rows | first_arrival | last_departure 
+----------------+----------------+---------------+----------------
+         200000 |          20000 | 2027-01-01    | 2040-09-09
+(1 row)
+

@@ -14,9 +14,9 @@ Verified on macOS arm64 with Docker Desktop. PostgreSQL runs in its own containe
 | PostgreSQL container       | `tolu-mit8103-postgres`                                                            |
 | Main PostgreSQL database   | `tolu_guesthouse_301920758`                                                        |
 | Fresh replay database      | `tolu_guesthouse_301920758_replay`                                                 |
-| Intended MongoDB database  | `tolu_guesthouse_301920758`                                                        |
+| MongoDB database           | `tolu_guesthouse_301920758`                                                        |
 
-Actual checks are in [EnvironmentResults](Otayomi_Tolulope_301920758_EnvironmentResults.txt). MongoDB ping and database selection succeeded with zero collections. Selecting a name does not materialise a MongoDB database; its portfolio data will be created in P4.
+Actual checks are in [EnvironmentResults](Otayomi_Tolulope_301920758_EnvironmentResults.txt). The initial environment check found zero MongoDB collections. P4 subsequently created and verified `reservation_events`; its current evidence is linked from the P4 README.
 
 ## First-time setup on a clean workspace
 
@@ -90,8 +90,18 @@ docker exec tolu-mit8103-postgres createdb -U tolu_admin \
 
 The schema accepts only the two documented database names. [P1 Replay](portfolio-1-database-design/Otayomi_Tolulope_301920758_P1_Replay.txt) records the actual clean installation and test run. Business rows should match the main database; actual audit timestamps naturally differ between executions.
 
+## Portfolios 2–5
+
+Follow the commands in each named portfolio README after completing P1. P2's independent `p2_benchmark` schema contains 200,000 synthetic requests; both main and replay databases currently contain that benchmark. Its measured settings include `shared_buffers=400kB`, which is unusually small and is explicitly discussed in the performance analysis. No server configuration was changed for these experiments; only the benchmark connection disables JIT and parallel query.
+
+P3 uses `tolu_guesthouse_301920758_p3`, copied from the P1 replay fixture before its transaction experiments. It contains 12 reservations after the two accepted examples. The main and replay `guesthouse` schemas retain their original ten reservations. P4 uses the MongoDB database `tolu_guesthouse_301920758`, collection `reservation_events`, with 13 synthetic lifecycle events. P5 is a proposed architecture discussion and creates no runtime resources.
+
 ## Scenario clock and process lifecycle
 
 The seed builds fictional November/December 2026 booking history, then leaves `demo_clock.as_of_date` at `2026-12-01`. Only the administrator changes this fixture control. Reservation audit timestamps still come from the real database clock. Advancing the fixture date does not automatically complete a stay; the status operation must be called explicitly.
 
 Stop this PostgreSQL instance with `docker stop tolu-mit8103-postgres`. For MongoDB, verify the process command and project path for the PID in `temp/runtime/mongodb.pid`, then send that process `SIGTERM`. Do not stop a different MongoDB process just because it uses the default port. Keep the data directories to restart later; generated data and secrets are not repository content.
+
+## Summary document source
+
+The named `FinalSummary.html` contains the editable three-page summary content and links to the condensed P1 SVG. Keep the existing portfolio directory alongside it when opening the HTML. The delivered `FinalSummary.pdf` was generated with ReportLab 4.5.1 from that content, checked as three A4 pages, and rendered with Poppler for visual inspection. Verify layout and page count after any source edit or re-export. Tool versions and sources are listed in the [references](Otayomi_Tolulope_301920758_References.md).

@@ -1,0 +1,157 @@
+{
+  "captured_at_utc": "2026-11-15T15:27:31.301352+00:00",
+  "database": "tolu_guesthouse_301920758_replay",
+  "server": "PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "synthetic_rows": 200000,
+  "query": "SELECT reservation_ref, arrival, departure, status, agreed_nightly_rate\nFROM p2_benchmark.reservation_history\nWHERE guest_code = 'G04242'\n  AND arrival >= DATE '2030-01-01'\n  AND arrival < DATE '2035-01-01'\nORDER BY arrival, reservation_ref",
+  "settings": {
+    "shared_buffers": "400kB",
+    "effective_cache_size": "4GB",
+    "work_mem": "4MB",
+    "block_size": "8192",
+    "random_page_cost": "4",
+    "jit": "off",
+    "max_parallel_workers_per_gather": "0"
+  },
+  "other_client_sessions_at_start": 0,
+  "warmup_runs_per_phase": 2,
+  "measured_runs_per_phase": 5,
+  "before": {
+    "execution_ms": [14.916, 14.19, 14.923, 14.373, 14.455],
+    "planning_ms": [2.82, 2.725, 2.949, 2.84, 2.858],
+    "median_execution_ms": 14.455,
+    "median_planning_ms": 2.84,
+    "root_shared_hit_blocks": [6, 6, 6, 6, 6],
+    "root_shared_read_blocks": [1935, 1935, 1935, 1935, 1935]
+  },
+  "after": {
+    "execution_ms": [0.8, 0.671, 0.784, 0.743, 0.694],
+    "planning_ms": [3.486, 1.922, 2.137, 2.164, 1.945],
+    "median_execution_ms": 0.743,
+    "median_planning_ms": 2.137,
+    "root_shared_hit_blocks": [6, 6, 6, 6, 6],
+    "root_shared_read_blocks": [19, 19, 19, 19, 19]
+  },
+  "result_rows": [
+    {
+      "reservation_ref": "BENCH-044967",
+      "arrival": "2030-01-27",
+      "departure": "2030-01-29",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 60000.0
+    },
+    {
+      "reservation_ref": "BENCH-050506",
+      "arrival": "2030-06-14",
+      "departure": "2030-06-16",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 60000.0
+    },
+    {
+      "reservation_ref": "BENCH-056045",
+      "arrival": "2030-11-02",
+      "departure": "2030-11-04",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-061584",
+      "arrival": "2031-03-20",
+      "departure": "2031-03-22",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-065772",
+      "arrival": "2031-07-03",
+      "departure": "2031-07-05",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-067123",
+      "arrival": "2031-08-05",
+      "departure": "2031-08-07",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 40000.0
+    },
+    {
+      "reservation_ref": "BENCH-071311",
+      "arrival": "2031-11-18",
+      "departure": "2031-11-20",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-076850",
+      "arrival": "2032-04-04",
+      "departure": "2032-04-06",
+      "status": "CONFIRMED",
+      "agreed_nightly_rate": 40000.0
+    },
+    {
+      "reservation_ref": "BENCH-082389",
+      "arrival": "2032-08-20",
+      "departure": "2032-08-22",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 40000.0
+    },
+    {
+      "reservation_ref": "BENCH-087928",
+      "arrival": "2033-01-05",
+      "departure": "2033-01-07",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 60000.0
+    },
+    {
+      "reservation_ref": "BENCH-093467",
+      "arrival": "2033-05-23",
+      "departure": "2033-05-25",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 60000.0
+    },
+    {
+      "reservation_ref": "BENCH-099006",
+      "arrival": "2033-10-11",
+      "departure": "2033-10-13",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-104545",
+      "arrival": "2034-02-26",
+      "departure": "2034-02-28",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-110084",
+      "arrival": "2034-07-14",
+      "departure": "2034-07-16",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 40000.0
+    },
+    {
+      "reservation_ref": "BENCH-114272",
+      "arrival": "2034-10-27",
+      "departure": "2034-10-29",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 25000.0
+    },
+    {
+      "reservation_ref": "BENCH-115623",
+      "arrival": "2034-11-29",
+      "departure": "2034-12-01",
+      "status": "CANCELLED",
+      "agreed_nightly_rate": 40000.0
+    }
+  ],
+  "independent_expected_rows_match": true,
+  "result_equivalence": true,
+  "result_sha256": "7f55559f83f92696aa314cbfc24fbaefec7f8978e045f645b3cccd9975965fbb",
+  "storage": {
+    "heap_bytes": 15851520,
+    "new_index_bytes": 6332416
+  },
+  "median_execution_ratio_before_over_after": 19.454912516823686
+}

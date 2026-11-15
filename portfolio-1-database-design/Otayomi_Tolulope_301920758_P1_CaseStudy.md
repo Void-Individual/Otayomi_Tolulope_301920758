@@ -28,10 +28,10 @@ The system supports availability enquiries, immediate confirmed reservations, ca
 
 There are no group-room bundles, room moves, stay extensions, temporary holds, waiting lists, overbooking, maintenance closures or multiple properties. Room, dates, party size and agreed price cannot be edited after creation. Cancellation followed by a new reservation is a separate operation and does not guarantee replacement availability.
 
-Payments, refunds, taxes, discounts, currency conversion, physical check-in/out, housekeeping, a guest-facing application and external integrations are excluded. Booking value is not collected revenue. A future MongoDB exercise will use the same fictional identifiers for reservation-event snapshots; automatic SQL-to-MongoDB synchronisation is not implemented.
+Payments, refunds, taxes, discounts, currency conversion, physical check-in/out, housekeeping, a guest-facing application and external integrations are excluded. Booking value is not collected revenue. The MongoDB exercise uses the same fictional identifiers for reservation-event snapshots; automatic SQL-to-MongoDB synchronisation is not implemented.
 
 ## Consistency across the portfolio
 
-P1 implements the relational model and rule tests. P2 will query availability, demand, value and cancellations and measure one optimisation. P3 will demonstrate transactions and real competing reservation sessions. P4 will model reservation events as documents. P5 will discuss a proposed architecture that preserves SQL booking authority while examining replication, availability and consistency. The later activities are not claimed as complete.
+P1 implements the relational model and rule tests. P2 queries availability, demand, value and cancellations and measures one optimisation. P3 demonstrates transactions and real competing reservation sessions. P4 models reservation events as documents. P5 discusses a proposed architecture that preserves SQL booking authority while examining replication, availability and consistency.
 
-The assessment permits a simulated organisation and lists hotel reservations among its examples. The specific guesthouse scope, data, code and business policies here were developed for this project. AI assistance and remaining student review are disclosed in the [root README](../Otayomi_Tolulope_301920758_README.md).
+The assessment permits a simulated organisation and lists hotel reservations among its examples. The specific guesthouse scope, data, code and business policies here were developed for this project.

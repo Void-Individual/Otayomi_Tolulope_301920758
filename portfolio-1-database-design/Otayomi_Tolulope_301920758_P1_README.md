@@ -39,11 +39,11 @@ The [main execution output](Otayomi_Tolulope_301920758_P1_Results.txt) records *
 
 The [clean replay output](Otayomi_Tolulope_301920758_P1_Replay.txt) records schema, seed and the same 47 checks in a second empty database. All business records match the main database exactly after tests. Real audit timestamps are excluded from this equality comparison because separate runs occur at different times.
 
-## Interpretation and remaining work
+## Interpretation and scope
 
 The tests support the implemented P1 integrity rules. The partial exclusion constraint lets a cancelled record remain in history without blocking its replacement; completed records still protect their historical nights. Capturing one rate per stay avoids changing earlier agreements when catalogue prices change.
 
-This batch does not demonstrate two simultaneous database sessions, measure query optimisation, implement NoSQL events or deploy cloud services. Those belong to P2–P5. No production authentication system is provided; the operator is a `NOLOGIN` database role, while the trusted administrator controls the fixture clock and setup.
+The other portfolios extend this model: [P2 measures queries and indexing](../portfolio-2-query-optimisation/Otayomi_Tolulope_301920758_P2_README.md), [P3 observes concurrent sessions](../portfolio-3-transactions-concurrency/Otayomi_Tolulope_301920758_P3_README.md), [P4 implements event documents](../portfolio-4-nosql/Otayomi_Tolulope_301920758_P4_README.md), and [P5 discusses a proposed cloud architecture](../portfolio-5-distributed-cloud/Otayomi_Tolulope_301920758_P5_README.md). No production authentication system is provided; the operator is a `NOLOGIN` database role, while the trusted administrator controls the fixture clock and setup.
 
 Verification includes a visual check of the SVG/PNG diagram and Prettier for authored Markdown/SVG. SQL is formatted with consistent indentation and verified by PostgreSQL execution; raw database outputs are preserved.
 

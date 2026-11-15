@@ -1,0 +1,20 @@
+Session A | database tolu_guesthouse_301920758_p3
+Started UTC: 2026-11-15T15:24:52.474637+00:00
+SQL> denotes the sent commands; remaining lines are captured psql output.
+
+SQL> SET statement_timeout='30s'; SET lock_timeout='25s'; SET timezone='Africa/Lagos';
+SQL> SELECT pg_backend_pid();
+520
+SQL> SET application_name = 'ToluP3-A';
+BEGIN ISOLATION LEVEL READ COMMITTED;
+SHOW transaction_isolation;
+SELECT pg_backend_pid() AS session_a_pid;
+SELECT guesthouse.reserve_room('PCG-P3-WINNER', 'G001', '104', '2026-12-24', '2026-12-26', 2);
+SELECT count(*) AS own_uncommitted_row_visible
+FROM guesthouse.reservation WHERE reservation_ref = 'PCG-P3-WINNER';
+read committed
+520
+PCG-P3-WINNER
+1
+SQL> COMMIT;
+WARNING:  there is no transaction in progress

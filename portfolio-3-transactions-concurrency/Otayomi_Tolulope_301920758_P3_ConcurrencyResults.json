@@ -1,0 +1,29 @@
+{
+  "started_at_utc": "2026-11-15T15:24:52.474637+00:00",
+  "database": "tolu_guesthouse_301920758_p3",
+  "session_a_pid": 520,
+  "session_b_pid": 534,
+  "isolation": "read committed",
+  "a_sees_own_uncommitted_booking": 1,
+  "b_sees_a_uncommitted_booking": 0,
+  "blocking_observed_at_utc": "2026-11-15T15:24:52.650760+00:00",
+  "blocking_observation": {
+    "pid": 534,
+    "state": "active",
+    "wait_event_type": "Lock",
+    "wait_event": "transactionid",
+    "blockers": [520]
+  },
+  "b_error_sqlstate": "23P01",
+  "final_rows": [
+    {
+      "reservation_ref": "PCG-P3-WINNER",
+      "room_number": "104",
+      "arrival": "2026-12-24",
+      "departure": "2026-12-26",
+      "status": "CONFIRMED"
+    }
+  ],
+  "invariant": "Exactly one accepted booking; losing transaction rolled back",
+  "experiment_sessions_remaining": 0
+}

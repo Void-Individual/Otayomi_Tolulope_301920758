@@ -1,0 +1,76 @@
+Captured UTC: 2026-11-15T15:24:20.388510+00:00
+Database: tolu_guesthouse_301920758
+Source: Otayomi_Tolulope_301920758_P2_Queries.sql
+
+Pager usage is off.
+BEGIN
+SET
+SELECT 9
+Q1: available rooms for two guests, [2026-12-10,2026-12-13)
+ room_number | category_name | capacity | current_nightly_rate 
+-------------+---------------+----------+----------------------
+ 103         | Standard      |        2 |             25000.00
+ 104         | Standard      |        2 |             25000.00
+ 202         | Deluxe        |        2 |             40000.00
+ 203         | Deluxe        |        3 |             40000.00
+ 204         | Deluxe        |        3 |             40000.00
+ 301         | Family        |        4 |             60000.00
+ 302         | Family        |        4 |             60000.00
+ 303         | Family        |        5 |             60000.00
+ 304         | Family        |        5 |             60000.00
+(9 rows)
+
+SELECT 7
+Q2: upcoming bookings and full-stay value (not payment revenue)
+ reservation_ref |   display_name    | room_number | category_name |  arrival   | departure  | booking_value_ngn 
+-----------------+-------------------+-------------+---------------+------------+------------+-------------------
+ PCG-F001        | Synthetic Guest C | 101         | Standard      | 2026-12-10 | 2026-12-12 |          50000.00
+ PCG-F003        | Synthetic Guest E | 102         | Standard      | 2026-12-10 | 2026-12-13 |          75000.00
+ PCG-F004        | Synthetic Guest F | 201         | Deluxe        | 2026-12-11 | 2026-12-14 |         120000.00
+ PCG-F002        | Synthetic Guest D | 101         | Standard      | 2026-12-12 | 2026-12-15 |          75000.00
+ PCG-F005        | Synthetic Guest G | 301         | Family        | 2026-12-20 | 2026-12-23 |         180000.00
+ PCG-F007        | Synthetic Guest B | 302         | Family        | 2026-12-20 | 2026-12-22 |         120000.00
+ PCG-F006        | Synthetic Guest C | 202         | Deluxe        | 2026-12-31 | 2027-01-03 |         120000.00
+(7 rows)
+
+SELECT 6
+Q3: booked room-nights and value inside each reporting window
+    label     | category_code | booked_nights | booking_value_ngn 
+--------------+---------------+---------------+-------------------
+ December     | DLX           |             4 |         160000.00
+ December     | FAM           |             5 |         300000.00
+ December     | STD           |             8 |         200000.00
+ Short window | DLX           |             3 |         120000.00
+ Short window | FAM           |             0 |              0.00
+ Short window | STD           |             7 |         175000.00
+(6 rows)
+
+SELECT 6
+Q4: rooms with no non-cancelled booking history
+ room_number 
+-------------
+ 103
+ 104
+ 203
+ 204
+ 303
+ 304
+(6 rows)
+
+SELECT 1
+Q5: cancellation history
+ reservation_ref | guest_code | room_number |  arrival   | departure  | cancelled_original_value_ngn 
+-----------------+------------+-------------+------------+------------+------------------------------
+ PCG-C001        | G008       | 302         | 2026-12-20 | 2026-12-22 |                    120000.00
+(1 row)
+
+SELECT 1
+Q6: guests without a non-cancelled booking
+ guest_code |   display_name    
+------------+-------------------
+ G008       | Synthetic Guest H
+(1 row)
+
+DO
+PASS: all six business results match independently specified expectations.
+ROLLBACK

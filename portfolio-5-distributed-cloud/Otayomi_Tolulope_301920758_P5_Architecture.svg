@@ -1,0 +1,235 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1600"
+  height="1100"
+  viewBox="0 0 1600 1100"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Palm Court Guesthouse proposed cloud architecture</title>
+  <desc id="desc">
+    Design only. Booking service writes to PostgreSQL primary with synchronous
+    standby, fenced failover and separate backups. A proposed transactional
+    outbox relay feeds a three-member MongoDB history replica set. None of these
+    cloud components is deployed.
+  </desc>
+  <defs>
+    <marker
+      id="arrow"
+      markerWidth="10"
+      markerHeight="10"
+      refX="9"
+      refY="5"
+      orient="auto"
+    >
+      <path d="M0 0 L10 5 L0 10 Z" fill="#41546c" />
+    </marker>
+  </defs>
+  <rect width="1600" height="1100" fill="#f5f7fb" />
+  <g font-family="Arial, sans-serif" fill="#172b45">
+    <text x="65" y="65" font-size="34" font-weight="700">
+      Palm Court Guesthouse • proposed cloud architecture
+    </text>
+    <text x="65" y="105" font-size="23" fill="#8b4421">
+      DESIGN ONLY — no cloud deployment, replication or failover test performed
+    </text>
+
+    <rect
+      x="65"
+      y="180"
+      width="260"
+      height="125"
+      rx="14"
+      fill="#ffffff"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="85" y="216" font-size="23" font-weight="700">
+      Reception / guests
+    </text>
+    <text x="85" y="250" font-size="21">Authenticated client</text>
+    <text x="85" y="279" font-size="21">HTTPS application</text>
+    <rect
+      x="440"
+      y="180"
+      width="300"
+      height="125"
+      rx="14"
+      fill="#ffffff"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="460" y="216" font-size="23" font-weight="700">
+      Booking service
+    </text>
+    <text x="460" y="250" font-size="21">Primary reads / writes</text>
+    <text x="460" y="279" font-size="21">Private database access</text>
+    <rect
+      x="1070"
+      y="180"
+      width="455"
+      height="150"
+      rx="14"
+      fill="#e7f1ff"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="1090" y="216" font-size="23" font-weight="700">
+      PostgreSQL primary • zone A
+    </text>
+    <text x="1090" y="250" font-size="21">Authoritative reservations</text>
+    <text x="1090" y="279" font-size="21">
+      Overlap constraint + proposed outbox
+    </text>
+    <text x="1090" y="308" font-size="21">
+      One transaction for booking + event
+    </text>
+    <path
+      d="M325 235 H430"
+      fill="none"
+      stroke="#41546c"
+      stroke-width="3"
+      marker-end="url(#arrow)"
+    />
+    <text x="350" y="220" font-size="19" fill="#41546c">HTTPS</text>
+    <path
+      d="M740 235 H1060"
+      fill="none"
+      stroke="#41546c"
+      stroke-width="3"
+      marker-end="url(#arrow)"
+    />
+    <text x="785" y="218" font-size="19" fill="#41546c">
+      Authoritative booking API
+    </text>
+    <rect
+      x="1070"
+      y="475"
+      width="455"
+      height="125"
+      rx="14"
+      fill="#e7f1ff"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="1090" y="511" font-size="23" font-weight="700">
+      PostgreSQL standby • zone B
+    </text>
+    <text x="1090" y="545" font-size="21">Synchronous WAL flush</text>
+    <text x="1090" y="574" font-size="21">
+      Replay may lag; read-only reports
+    </text>
+    <path
+      d="M1295 330 V465"
+      fill="none"
+      stroke="#41546c"
+      stroke-width="3"
+      marker-end="url(#arrow)"
+    />
+    <text x="1315" y="405" font-size="19" fill="#41546c">Synchronous WAL</text>
+    <rect
+      x="65"
+      y="475"
+      width="260"
+      height="155"
+      rx="14"
+      fill="#fff0df"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="85" y="511" font-size="23" font-weight="700">
+      Failover controls
+    </text>
+    <text x="85" y="545" font-size="21">Controller / quorum</text>
+    <text x="85" y="574" font-size="21">Fence former writer</text>
+    <text x="85" y="603" font-size="21">Safe promotion only</text>
+    <rect
+      x="440"
+      y="475"
+      width="300"
+      height="155"
+      rx="14"
+      fill="#ffffff"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="460" y="511" font-size="23" font-weight="700">
+      Proposed outbox relay
+    </text>
+    <text x="460" y="545" font-size="21">Committed events only</text>
+    <text x="460" y="574" font-size="21">Stable IDs + retry</text>
+    <text x="460" y="603" font-size="21">Delivery can lag booking</text>
+    <path
+      d="M1070 290 H900 V530 H750"
+      fill="none"
+      stroke="#41546c"
+      stroke-width="3"
+      marker-end="url(#arrow)"
+    />
+    <text x="920" y="420" font-size="19" fill="#41546c">Committed outbox</text>
+    <rect
+      x="65"
+      y="770"
+      width="675"
+      height="185"
+      rx="14"
+      fill="#e4f4ef"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="85" y="806" font-size="23" font-weight="700">
+      MongoDB history • three data-bearing voters
+    </text>
+    <text x="85" y="840" font-size="21">
+      Primary + two secondaries in three failure domains
+    </text>
+    <text x="85" y="869" font-size="21">
+      Majority writes: two voters must acknowledge
+    </text>
+    <text x="85" y="898" font-size="21">
+      History is eventually consistent with PostgreSQL
+    </text>
+    <path
+      d="M590 630 V760"
+      fill="none"
+      stroke="#41546c"
+      stroke-width="3"
+      marker-end="url(#arrow)"
+    />
+    <text x="610" y="703" font-size="19" fill="#41546c">Retry by event ID</text>
+    <rect
+      x="1070"
+      y="800"
+      width="455"
+      height="155"
+      rx="14"
+      fill="#fff0df"
+      stroke="#bbc9d9"
+      stroke-width="2"
+    />
+    <text x="1090" y="836" font-size="23" font-weight="700">
+      Separately controlled backup storage
+    </text>
+    <text x="1090" y="870" font-size="21">Base backups + WAL archive</text>
+    <text x="1090" y="899" font-size="21">Encrypted; retention policy</text>
+    <text x="1090" y="928" font-size="21">Restore tests required</text>
+    <path
+      d="M1525 255 H1560 V875 H1535"
+      fill="none"
+      stroke="#41546c"
+      stroke-width="3"
+      marker-end="url(#arrow)"
+    />
+    <text x="1080" y="750" font-size="19" fill="#41546c">
+      Backup path is separate from replication
+    </text>
+    <text x="65" y="1015" font-size="22" font-weight="700">
+      Consistency boundary: PostgreSQL accepts bookings; MongoDB records
+      history.
+    </text>
+    <text x="65" y="1055" font-size="21">
+      Current implementation: local PostgreSQL + standalone MongoDB; no
+      automatic synchronisation or sharding.
+    </text>
+  </g>
+</svg>

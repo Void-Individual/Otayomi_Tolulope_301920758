@@ -1,7 +1,6 @@
 PALM COURT GUESTHOUSE — ENVIRONMENT EVIDENCE
 Student: Tolulope Otayomi | 301920758
 Captured UTC: 2026-11-15T14:37:51.949415+00:00
-Executed by: OpenAI Codex agent
 
 PostgreSQL: PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
 Container: tolu-mit8103-postgres

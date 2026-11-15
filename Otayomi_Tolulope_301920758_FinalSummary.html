@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MIT 8103 Portfolio Summary - Tolulope Otayomi</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 17mm;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        color: #162b42;
+        background: #e9eef4;
+        margin: 0;
+        font-size: 10.1pt;
+        line-height: 1.317;
+      }
+      .page {
+        box-sizing: border-box;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 17mm;
+        margin: 10mm auto;
+        background: white;
+        break-after: page;
+      }
+      .page:last-child {
+        break-after: auto;
+      }
+      h1 {
+        font-size: 23pt;
+        line-height: 1.12;
+        margin: 0 0 8pt;
+      }
+      h2 {
+        font-size: 14pt;
+        margin: 14pt 0 6pt;
+      }
+      h3 {
+        font-size: 11.5pt;
+        margin: 10pt 0 5pt;
+      }
+      p {
+        margin: 0 0 7pt;
+      }
+      a {
+        color: #235c83;
+        text-decoration: underline;
+      }
+      .kicker {
+        font-size: 9pt;
+        color: #52697f;
+        letter-spacing: 0.6pt;
+        margin-bottom: 7pt;
+      }
+      .identity {
+        font-size: 11pt;
+        font-weight: bold;
+      }
+      .small,
+      figcaption {
+        font-size: 8.5pt;
+        line-height: 1.3;
+        color: #46586c;
+      }
+      figure {
+        margin: 9pt 0;
+      }
+      figure img {
+        display: block;
+        width: 100%;
+      }
+      figcaption {
+        margin-top: 4pt;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 7pt 0 9pt;
+        font-size: 8.6pt;
+      }
+      th,
+      td {
+        padding: 6pt;
+        border: 1px solid #c7d3df;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #edf3fa;
+      }
+      .evidence {
+        background: #edf3fa;
+        padding: 9pt;
+        font-family: monospace;
+        font-size: 9pt;
+        white-space: pre-wrap;
+        line-height: 1.35;
+      }
+      ul {
+        padding-left: 16pt;
+        margin: 4pt 0 9pt;
+      }
+      li {
+        margin-bottom: 4pt;
+      }
+      @media print {
+        body {
+          background: white;
+        }
+        .page {
+          width: auto;
+          min-height: 0;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <p class="kicker">
+        MIT 8103 ADVANCED DATABASE SYSTEMS | SEPTEMBER COHORT 2026
+      </p>
+      <h1>Palm Court Guesthouse<br />Portfolio summary</h1>
+      <p class="identity">Tolulope Otayomi | Student ID 301920758</p>
+      <p class="small">
+        Public repository:
+        <a href="https://github.com/Void-Individual/Otayomi_Tolulope_301920758"
+          >github.com/Void-Individual/Otayomi_Tolulope_301920758</a
+        >
+      </p>
+      <h2>Case study and scope</h2>
+      <p>
+        Palm Court Guesthouse is a fictional single-property business in Lagos
+        with 12 rooms in three categories. Receptionists need to find available
+        rooms, reserve complete stays, and record cancellations or completion.
+        Managers need reports on booked nights, booking value and cancellation
+        history. All records are synthetic; payments, a guest-facing application
+        and external integrations are outside scope.
+      </p>
+      <p>
+        Each reservation covers one room and one lead guest. Arrival is included
+        and departure excluded, so a 10-12 December stay occupies two nights.
+        Cancelled reservations release availability but remain in history.
+        Prices are agreed NGN booking values, not receipts or profit. Scenario
+        dates are separate from actual execution timestamps.
+      </p>
+      <h2>P1. Database design and modelling</h2>
+      <p>
+        PostgreSQL stores four business relations: guest, room category, room
+        and reservation. Primary and foreign keys enforce identity and required
+        relationships. A separate administrator-controlled demonstration clock
+        supports repeatable date rules. The normalisation argument progresses
+        from repeating nights to 3NF: guest and category facts are separated,
+        while each booking retains its historical agreed rate. Nights and totals
+        are derived.
+      </p>
+      <figure>
+        <img
+          src="portfolio-1-database-design/Otayomi_Tolulope_301920758_P1_SummaryER.svg"
+          alt="Condensed ER model showing guest, reservation, room and room category relationships"
+        />
+        <figcaption>
+          Figure 1. Selected business fields and cardinalities; the full P1 ER
+          diagram includes all columns and the technical clock. PK = primary
+          key; FK = foreign key.
+        </figcaption>
+      </figure>
+      <p>
+        A partial GiST exclusion constraint prevents overlapping non-cancelled
+        stays in the same room. Triggers check capacity, permitted status
+        changes and immutable booking terms. The restricted operator uses
+        controlled booking functions. These mechanisms apply PostgreSQL
+        constraints and range types [2].
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>P1 evidence</th>
+            <th>Observed result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Constraint tests and clean installation replay</td>
+            <td>
+              47 checks passed; original 8 guests, 3 categories, 12 rooms and 10
+              reservations retained.
+            </td>
+          </tr>
+          <tr>
+            <td>Lifecycle and pricing checks</td>
+            <td>
+              Adjacent stays accepted; overlaps rejected; cancellation releases
+              nights; earlier agreed rates survive later category-price changes.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">
+        Evidence entry point: portfolio-1-database-design, P1_README.md and
+        P1_Results.txt (all filenames carry the student prefix).
+      </p>
+    </section>
+    <section class="page">
+      <p class="kicker">
+        PALM COURT GUESTHOUSE | IMPLEMENTATION AND MEASURED EVIDENCE
+      </p>
+      <h2>P2. Query processing and optimisation</h2>
+      <p>
+        Six SQL queries cover availability, upcoming bookings, period totals,
+        unused rooms, cancellations and guests without non-cancelled bookings.
+        Assertions compare actual ordered results with specified expectations.
+        December totals are 17 booked room-nights and NGN 660,000. A 31
+        December-3 January stay contributes only its December night to that
+        month.
+      </p>
+      <p>
+        A separate 200,000-request synthetic workload measures a guest-history
+        query before and after a B-tree index on
+        <strong>(guest_code, arrival)</strong>. It contains 5,000 synthetic
+        guests and an intentionally artificial 90% cancellation rate. Both
+        phases use the same query and data, ANALYZE, two warm-up runs and five
+        measured EXPLAIN ANALYZE runs [3].
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Captured measure</th>
+            <th>Before index</th>
+            <th>After index</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Access plan</td>
+            <td>Sequential scan + sort</td>
+            <td>Bitmap index/heap scan + sort</td>
+          </tr>
+          <tr>
+            <td>Median execution time</td>
+            <td>14.455 ms</td>
+            <td>0.743 ms</td>
+          </tr>
+          <tr>
+            <td>Shared buffer reads per execution</td>
+            <td>1,935</td>
+            <td>19</td>
+          </tr>
+          <tr>
+            <td>Ordered result rows</td>
+            <td>16</td>
+            <td>16, unchanged</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The execution-only ratio is 19.45x; the added index occupies 6.04 MiB.
+        Index maintenance adds write cost, but that cost was not measured. The
+        server had only 400 kB of shared buffers; JIT and parallel query were
+        disabled equally. Buffer reads may come from the OS cache. These local
+        measurements are not a production-performance guarantee.
+      </p>
+      <h2>P3. Transactions and concurrency</h2>
+      <p>
+        A committed booking persists. A separate transaction inserts a guest and
+        valid booking, then encounters a capacity error; rollback removes all
+        its attempted changes. A duplicate booking reference is rejected. Two
+        independent READ COMMITTED sessions then compete for the same room and
+        dates. B cannot see A's uncommitted row, but its conflicting insert
+        waits on the exclusion constraint [4].
+      </p>
+      <pre class="evidence">
+Observed wait: B PID 534, wait_event_type=Lock
+wait_event=transactionid; blocking PID=520 (A)
+A commits; B receives SQLSTATE 23P01 and rolls back.
+Final accepted reference: PCG-P3-WINNER; loser absent.</pre>
+      <p class="small">
+        Selected observation from P3_ConcurrencyResults.json; actual run 15
+        November 2026. Session transcripts preserve the commands and output.
+        Both sessions closed; the separate P3 database ended with 12
+        reservations.
+      </p>
+      <h2>P4. NoSQL reservation events</h2>
+      <p>
+        MongoDB stores one document per event with an embedded booking snapshot:
+        13 reconstructed events for ten P1 reservations (ten confirmations, two
+        completions and one cancellation). BSON dates and Decimal128 rates have
+        explicit validation. Nested room queries and aggregation distinguish
+        historical events from the latest booking state [5].
+      </p>
+      <p>
+        Replay inserts zero duplicates; invalid documents are rejected.
+        Reconciliation matches all 11 represented business fields for ten latest
+        snapshots against PostgreSQL. Embedding aids history retrieval but
+        duplicates data. MongoDB does not enforce the SQL overlap rule or
+        synchronise automatically; PostgreSQL remains the booking authority.
+      </p>
+    </section>
+    <section class="page">
+      <p class="kicker">
+        PALM COURT GUESTHOUSE | DISTRIBUTION, REFLECTION AND SOURCES
+      </p>
+      <h2>P5. Distributed and cloud database discussion</h2>
+      <p>
+        <strong>Proposal only:</strong> no cloud deployment, replica set,
+        failover or backup restoration was performed. The proposed design keeps
+        one PostgreSQL writer with a synchronous standby across zones, fenced
+        failover and separately controlled backups. It prioritises safe booking
+        acceptance during partitions; losing a required standby can delay
+        commits. A standby does not replace a recoverable backup [6].
+      </p>
+      <p>
+        A proposed three-member MongoDB replica set would use majority writes
+        for history. A transactional SQL outbox and retryable relay would
+        deliver committed events using stable IDs; history could lag behind
+        bookings. Neither component is implemented. Sharding is unnecessary for
+        12 rooms; future multi-property growth would require workload and
+        shard-key analysis [7].
+      </p>
+      <h2>Individual reflection</h2>
+      <p>
+        I initially found it difficult to interpret the requirements and
+        understand how the five activities should fit together. Separating the
+        deliverables helped clarify the scope while retaining one case study.
+        Distinguishing implemented work from a proposed cloud design was
+        particularly important.
+      </p>
+      <p>
+        MongoDB configuration was difficult to get right during the first few
+        attempts. The working setup uses a separate local process and
+        project-specific database. The connection check establishes
+        reachability; validation and SQL reconciliation check different aspects
+        of data correctness. A successful connection alone does not establish
+        that the model or results are correct.
+      </p>
+      <p>
+        Month-specific booking values were also tricky. A 31 December-3 January
+        stay at NGN 40,000 per night totals NGN 120,000, but only NGN 40,000
+        belongs to December. Counting only nights inside the reporting period,
+        excluding departure and cancelled stays, explains why monthly value
+        differs from full-stay value.
+      </p>
+      <h2>References</h2>
+      <ul class="small">
+        <li>
+          [1] Miva University.
+          <em
+            >MIT 8103 Advanced Database Systems Continuous Assessment, September
+            Cohort 2026</em
+          >, sections 3-8 and 11. Assessment brief.
+        </li>
+        <li>
+          [2] PostgreSQL 17:
+          <a href="https://www.postgresql.org/docs/17/ddl-constraints.html"
+            >constraints</a
+          >
+          and
+          <a href="https://www.postgresql.org/docs/17/rangetypes.html"
+            >range types</a
+          >.
+        </li>
+        <li>
+          [3] PostgreSQL 17:
+          <a href="https://www.postgresql.org/docs/17/using-explain.html"
+            >Using EXPLAIN</a
+          >.
+        </li>
+        <li>
+          [4] PostgreSQL 17:
+          <a href="https://www.postgresql.org/docs/17/transaction-iso.html"
+            >transaction isolation</a
+          >
+          and
+          <a href="https://www.postgresql.org/docs/17/monitoring-stats.html"
+            >monitoring statistics</a
+          >.
+        </li>
+        <li>
+          [5] MongoDB 7.0:
+          <a href="https://www.mongodb.com/docs/v7.0/data-modeling/"
+            >data modelling</a
+          >
+          and
+          <a href="https://www.mongodb.com/docs/v7.0/core/schema-validation/"
+            >schema validation</a
+          >.
+        </li>
+        <li>
+          [6] PostgreSQL 17:
+          <a href="https://www.postgresql.org/docs/17/warm-standby.html"
+            >standby replication</a
+          >,
+          <a
+            href="https://www.postgresql.org/docs/17/warm-standby-failover.html"
+            >failover</a
+          >
+          and
+          <a href="https://www.postgresql.org/docs/17/continuous-archiving.html"
+            >point-in-time recovery</a
+          >.
+        </li>
+        <li>
+          [7] MongoDB 7.0:
+          <a href="https://www.mongodb.com/docs/v7.0/replication/"
+            >replication</a
+          >,
+          <a href="https://www.mongodb.com/docs/v7.0/reference/write-concern/"
+            >write concern</a
+          >
+          and
+          <a href="https://www.mongodb.com/docs/v7.0/core/sharding-shard-key/"
+            >shard keys</a
+          >.
+        </li>
+        <li>
+          [8] arizonal2014:
+          <a href="https://github.com/arizonal2014/MIT8103_Codelab"
+            >manual codelab</a
+          >,
+          <a href="https://github.com/arizonal2014/MIT8103_Portfolio_Generator"
+            >generator documentation</a
+          >
+          and
+          <a href="https://github.com/arizonal2014/Harrison_Perete_202600001"
+            >worked library example</a
+          >, consulted for workflow. The generator was not run or used.
+        </li>
+        <li>
+          [9] Document and verification tools:
+          <a href="https://docs.reportlab.com/">ReportLab</a> 4.5.1, Beautiful
+          Soup 4.15.0, pypdf 6.21.4, Pillow 11.3.0,
+          <a href="https://github.com/thx/resvg-js">resvg-js</a> 2.6.2,
+          <a href="https://prettier.io/docs/">Prettier</a> 3.10.1 and
+          <a href="https://eslint.org/docs/latest/">ESLint</a> 10.15.0.
+        </li>
+      </ul>
+      <p class="small">
+        Full scripts, outputs, diagrams, reproducibility instructions and
+        additional technical references are organised in the five portfolio
+        directories. This summary follows the assessment structure [1].
+      </p>
+      <h3>AI-use declaration</h3>
+      <p class="small">
+        OpenAI Codex assisted with planning, code, documentation and test
+        execution. I reviewed the benchmark interpretation, concurrency
+        explanation and proposed-cloud scope.
+      </p>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+Session B | database tolu_guesthouse_301920758_p3
+Started UTC: 2026-11-15T15:24:52.474637+00:00
+SQL> denotes the sent commands; remaining lines are captured psql output.
+
+SQL> SET statement_timeout='30s'; SET lock_timeout='25s'; SET timezone='Africa/Lagos';
+SQL> SELECT pg_backend_pid();
+534
+SQL> SET application_name = 'ToluP3-B';
+BEGIN ISOLATION LEVEL READ COMMITTED;
+SHOW transaction_isolation;
+SELECT pg_backend_pid() AS session_b_pid;
+SELECT count(*) AS other_uncommitted_row_visible
+FROM guesthouse.reservation WHERE reservation_ref = 'PCG-P3-WINNER';
+read committed
+534
+0
+SQL> \set ON_ERROR_STOP off
+SELECT guesthouse.reserve_room('PCG-P3-LOSER', 'G002', '104', '2026-12-24', '2026-12-26', 1);
+\echo CONFLICT_SQLSTATE :SQLSTATE
+\set ON_ERROR_STOP on
+ERROR:  conflicting key value violates exclusion constraint "reservation_no_overlap"
+DETAIL:  Key (room_number, daterange(arrival, departure, '[)'::text))=(104, [2026-12-24,2026-12-26)) conflicts with existing key (room_number, daterange(arrival, departure, '[)'::text))=(104, [2026-12-24,2026-12-26)).
+CONTEXT:  SQL statement "INSERT INTO guesthouse.reservation (
+        reservation_ref, guest_code, room_number, arrival, departure, party_size
+    ) VALUES (p_reference, p_guest, p_room, p_arrival, p_departure, p_party)"
+PL/pgSQL function reserve_room(text,text,text,date,date,integer) line 3 at SQL statement
+CONFLICT_SQLSTATE 23P01
+SQL> ROLLBACK;
+-- This read is a new transaction, after the aborted transaction was rolled back.
+SELECT reservation_ref, room_number, status FROM guesthouse.reservation
+WHERE room_number = '104' AND arrival = DATE '2026-12-24' ORDER BY reservation_ref;
+PCG-P3-WINNER|104|CONFIRMED
+WARNING:  there is no transaction in progress

@@ -1,0 +1,12 @@
+Sort  (cost=5435.29..5435.33 rows=15 width=36) (actual time=14.287..14.288 rows=16 loops=1)
+  Sort Key: arrival, reservation_ref
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6 read=1935
+  ->  Seq Scan on reservation_history  (cost=0.00..5435.00 rows=15 width=36) (actual time=2.914..14.243 rows=16 loops=1)
+        Filter: ((arrival >= '2030-01-01'::date) AND (arrival < '2035-01-01'::date) AND (guest_code = 'G04242'::text))
+        Rows Removed by Filter: 199984
+        Buffers: shared read=1935
+Planning:
+  Buffers: shared hit=90 read=39
+Planning Time: 2.875 ms
+Execution Time: 14.367 ms

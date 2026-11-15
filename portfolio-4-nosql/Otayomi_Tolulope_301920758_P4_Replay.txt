@@ -1,0 +1,162 @@
+Actual execution UTC: 2026-11-15T15:26:51.899Z
+Server: 7.0.43 | Database: tolu_guesthouse_301920758
+Fixture: reconstructed P1 synthetic events; dates are scenario dates, not execution timestamps.
+PASS: no unexpected existing events
+PASS: stored snapshot matches PCG-C001:1
+PASS: stored snapshot matches PCG-C001:2
+PASS: stored snapshot matches PCG-F001:1
+PASS: stored snapshot matches PCG-F002:1
+PASS: stored snapshot matches PCG-F003:1
+PASS: stored snapshot matches PCG-F004:1
+PASS: stored snapshot matches PCG-F005:1
+PASS: stored snapshot matches PCG-F006:1
+PASS: stored snapshot matches PCG-F007:1
+PASS: stored snapshot matches PCG-H001:1
+PASS: stored snapshot matches PCG-H001:2
+PASS: stored snapshot matches PCG-H002:1
+PASS: stored snapshot matches PCG-H002:2
+Inserted events this run: 0
+PASS: 13 events retained without duplicate replay writes
+
+Example nested document (Extended JSON preserves BSON types):
+{
+  "_id": "PCG-C001:2",
+  "eventType": "CANCELLED",
+  "reservationRef": "PCG-C001",
+  "scenarioDate": {
+    "$date": {
+      "$numberLong": "1796083200000"
+    }
+  },
+  "schemaVersion": {
+    "$numberInt": "1"
+  },
+  "sequence": {
+    "$numberInt": "2"
+  },
+  "snapshot": {
+    "guestCode": "G008",
+    "roomNumber": "302",
+    "categoryCode": "FAM",
+    "arrival": {
+      "$date": {
+        "$numberLong": "1797724800000"
+      }
+    },
+    "departure": {
+      "$date": {
+        "$numberLong": "1797897600000"
+      }
+    },
+    "partySize": {
+      "$numberInt": "3"
+    },
+    "agreedNightlyRate": {
+      "$numberDecimal": "60000.00"
+    },
+    "currency": "NGN",
+    "status": "CANCELLED"
+  }
+}
+
+Room 302 event history:
+[
+  {
+    _id: 'PCG-C001:1',
+    eventType: 'CONFIRMED',
+    scenarioDate: ISODate('2026-12-01T00:00:00.000Z')
+  },
+  {
+    _id: 'PCG-C001:2',
+    eventType: 'CANCELLED',
+    scenarioDate: ISODate('2026-12-01T00:00:00.000Z')
+  },
+  {
+    _id: 'PCG-F007:1',
+    eventType: 'CONFIRMED',
+    scenarioDate: ISODate('2026-12-01T00:00:00.000Z')
+  }
+]
+PASS: room 302 has two confirmations and one cancellation
+
+Event counts:
+[
+  {
+    _id: 'CANCELLED',
+    count: 1
+  },
+  {
+    _id: 'COMPLETED',
+    count: 2
+  },
+  {
+    _id: 'CONFIRMED',
+    count: 10
+  }
+]
+PASS: expected event-type totals
+
+Latest reservation states (avoid counting historical confirmations as active):
+[
+  {
+    _id: 'CANCELLED',
+    count: 1
+  },
+  {
+    _id: 'COMPLETED',
+    count: 2
+  },
+  {
+    _id: 'CONFIRMED',
+    count: 7
+  }
+]
+PASS: latest states match P1 totals
+
+Non-cancelled full-stay booking value (all scenario dates):
+[
+  {
+    _id: null,
+    reservations: 9,
+    bookingValueNGN: Decimal128('910000.0000000000000000')
+  }
+]
+PASS: 9 reservations total NGN 910000, excluding cancelled value
+PASS: duplicate event ID rejected (MongoDB code 11000)
+PASS: duplicate reservation sequence rejected (MongoDB code 11000)
+PASS: string date rejected (MongoDB code 121)
+PASS: negative price rejected (MongoDB code 121)
+PASS: fractional kobo rejected (MongoDB code 121)
+PASS: reversed stay rejected (MongoDB code 121)
+PASS: zero party size rejected (MongoDB code 121)
+PASS: event and snapshot status mismatch rejected (MongoDB code 121)
+PASS: validation tests left the fixture unchanged
+
+Indexes:
+[
+  {
+    v: 2,
+    key: {
+      _id: 1
+    },
+    name: '_id_'
+  },
+  {
+    v: 2,
+    key: {
+      reservationRef: 1,
+      sequence: 1
+    },
+    name: 'reservation_sequence',
+    unique: true
+  },
+  {
+    v: 2,
+    key: {
+      'snapshot.roomNumber': 1,
+      scenarioDate: 1
+    },
+    name: 'room_event_date'
+  }
+]
+PASS: all MongoDB checks completed

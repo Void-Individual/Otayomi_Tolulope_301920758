@@ -1,0 +1,96 @@
+Captured UTC: 2026-11-15T15:24:26.448264+00:00
+Database: tolu_guesthouse_301920758_p3
+Source: Otayomi_Tolulope_301920758_P3_Transactions.sql
+
+Pager usage is off.
+DO
+CREATE FUNCTION
+     actual_execution_time     | scenario_date 
+-------------------------------+---------------
+ 2026-11-15 15:24:26.430151+00 | 2026-12-01
+(1 row)
+
+ initial_reservations 
+----------------------
+                   10
+(1 row)
+
+CASE 1: commit a complete two-night reservation
+BEGIN
+SET
+ reserve_room  
+---------------
+ PCG-P3-COMMIT
+(1 row)
+
+COMMIT
+ check_true 
+------------
+ 
+(1 row)
+
+CASE 2: rollback a valid guest and booking after a later capacity failure
+NOTICE:  00000: PASS: committed booking persists
+LOCATION:  exec_stmt_raise, pl_exec.c:3897
+BEGIN
+INSERT 0 1
+  reserve_room   
+-----------------
+ PCG-P3-ROLLBACK
+(1 row)
+
+ERROR:  23514: Party exceeds room capacity
+CONTEXT:  PL/pgSQL function guard_reservation() line 35 at RAISE
+SQL statement "INSERT INTO guesthouse.reservation (
+        reservation_ref, guest_code, room_number, arrival, departure, party_size
+    ) VALUES (p_reference, p_guest, p_room, p_arrival, p_departure, p_party)"
+PL/pgSQL function reserve_room(text,text,text,date,date,integer) line 3 at SQL statement
+CONSTRAINT NAME:  reservation_capacity
+LOCATION:  exec_stmt_raise, pl_exec.c:3897
+ROLLBACK
+NOTICE:  00000: PASS: capacity error had expected SQLSTATE
+LOCATION:  exec_stmt_raise, pl_exec.c:3897
+ check_true 
+------------
+ 
+(1 row)
+
+ check_true 
+------------
+ 
+(1 row)
+
+CASE 3: repeated reference fails without creating another booking
+NOTICE:  00000: PASS: guest and both attempted bookings absent after rollback
+LOCATION:  exec_stmt_raise, pl_exec.c:3897
+BEGIN
+ERROR:  23505: duplicate key value violates unique constraint "reservation_pkey"
+DETAIL:  Key (reservation_ref)=(PCG-P3-COMMIT) already exists.
+CONTEXT:  SQL statement "INSERT INTO guesthouse.reservation (
+        reservation_ref, guest_code, room_number, arrival, departure, party_size
+    ) VALUES (p_reference, p_guest, p_room, p_arrival, p_departure, p_party)"
+PL/pgSQL function reserve_room(text,text,text,date,date,integer) line 3 at SQL statement
+SCHEMA NAME:  guesthouse
+TABLE NAME:  reservation
+CONSTRAINT NAME:  reservation_pkey
+LOCATION:  _bt_check_unique, nbtinsert.c:666
+ROLLBACK
+ check_true 
+------------
+ 
+(1 row)
+
+NOTICE:  00000: PASS: repeat rejected by primary-key SQLSTATE
+LOCATION:  exec_stmt_raise, pl_exec.c:3897
+NOTICE:  00000: PASS: exactly one extra reservation and original guest count
+LOCATION:  exec_stmt_raise, pl_exec.c:3897
+ check_true 
+------------
+ 
+(1 row)
+
+ reservation_ref | guest_code | room_number |  arrival   | departure  |  status   | agreed_nightly_rate 
+-----------------+------------+-------------+------------+------------+-----------+---------------------
+ PCG-P3-COMMIT   | G001       | 103         | 2026-12-16 | 2026-12-18 | CONFIRMED |            25000.00
+(1 row)
+
